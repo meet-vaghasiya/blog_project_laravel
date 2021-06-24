@@ -1,0 +1,42 @@
+1. if you define two route with same name , than last one will be considered.
+
+2. php artisan route:list for listing all routes.
+
+3.  NAMING CONVENSION: 
+
+//listing
+Route::get('/teams', 'TeamController@index')->name('teams.create');
+
+//Create
+Route::get('/teams/create', 'TeamController@create')->name('teams.create');
+
+//Store
+Route::post('/teams/store', 'TeamController@store')->name('teams.store');
+
+//Show
+Route::get('/teams/{id}', 'TeamController@show')->name('teams.show');
+
+//Edit
+Route::get('/teams/{id}/edit', 'TeamController@edit')->name('teams.edit');
+
+//Update
+Route::put('/teams/{id}/update', 'TeamController@update')->name('teams.update);
+
+//Delete
+Route::delete('/teams/{id}/delete', 'TeamController@delete')->name('teams.delete');
+
+
+4.Route::get('/where/{id}', function ($id = 20) {
+    return  'whre condition:' . $id;
+})->where([
+    'id' => '[0-9]+'
+])->name('where.index');
+
+
+for constriing value of id in route. if id value is not match condition in where condition in route where , than it will throw an 404 error
+
+5.we also provide constrined in routeServiceProviders boot method. by using         
+Route::pattern('number', '[0-9]+');
+
+
+
