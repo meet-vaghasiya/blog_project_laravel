@@ -78,4 +78,38 @@ Route::get('/route-service-provider-constrained/{number}', function ($id = 20) {
     return  'route-service-provider-constrained' . $id;
 });
 
+
+Route::get('section-9', function () {
+    return  '<h1 style="color:red">hello world</h1>';
+});
+
+Route::get('section-9', function () {
+    return  '<h1 style="color:red">hello world</h1>';
+});
+Route::get('section-9', function () {
+    return  view('section-9');  //don't use blade php syntact
+});
+Route::get('section-9', function () {
+    return  '<h1 style="color:red">hello world</h1>';
+});
+
+
+Route::view('/direct-view', 'about-us');
+
+Route::get('about-us', function () {
+
+    return view('about-us');
+});
+Route::get('contact/{id}', function ($id) {
+
+    $posts = [
+        1 => ['title' => 'contact page1', 'content' => 'This is contect page from dynamic'],
+        2 => ['title' => 'about-us page', 'content' => 'This is about  us page']
+    ];
+
+    abort_if(!isset($posts[$id]), 404);  // if we not find this page than it will return nice 404 error page in laravel
+
+    // return view('contact', ['posts' => $posts[$id]]);
+    return view('contact', compact('posts'));
+});
 //if id is not number than give 404 error

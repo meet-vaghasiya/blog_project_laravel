@@ -1,0 +1,1 @@
+<h1>templete from view file</h1>
