@@ -12,7 +12,7 @@ class HomeController extends Controller
 
 
         $author = Author::with('profile')->get();
-        dd($author);
+        // dd($author);
 
         return view('home.index');
     }

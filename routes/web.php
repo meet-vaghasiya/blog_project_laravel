@@ -35,6 +35,10 @@ Route::get('/post/{post}/edit', [PostController::class, 'edit'])->name('posts.ed
 Route::post('/post/{post}/update', [PostController::class, 'update'])->name('posts.update');
 Route::post('/post/store', [PostController::class, 'store'])->name('posts.store');
 Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts.edit');
+
+
 // Route::get('/contact', function () {
 //     return 'contact page';
 //     // return view('welcome');
