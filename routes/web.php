@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/test-redirect', function () {
     return view('welcome');
-});
+})->name('test.redirect');
 
 Route::get('/', function () {
     return 'second route';
@@ -113,3 +113,10 @@ Route::get('contact/{id}', function ($id) {
     return view('contact', compact('posts'));
 });
 //if id is not number than give 404 error
+
+
+Route::get('conditional-rendering', function () {
+
+
+    return view('conditonal-rendering');
+})->middleware('test:first,second');
