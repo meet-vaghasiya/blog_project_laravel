@@ -13,6 +13,12 @@ class PostController extends Controller
     {
         return view('posts.index', ['posts' => Post::all()]);
     }
+
+    public function show(Post $post)
+    {
+        return view('posts.show', ['post' => $post]);
+    }
+
     public function edit(Post $post)
     {
         // dd(Post::find($post));
@@ -24,14 +30,13 @@ class PostController extends Controller
     {
         return view('posts.create');
     }
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $request->validate([
-            'title' => 'required|max:100',
-            'content' => 'required|min:3|max:100',
+        // $request->validate([
+        //     'title' => 'required|max:100',
+        //     'content' => 'required|min:3|max:100',
 
-        ]);
-
+        // ]);
 
         $post = new Post();
         $post->title = $request->title;
@@ -53,7 +58,7 @@ class PostController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $post = Post::destroy($id);
         $request->session()->flash('status', 'The blog Deleted succesfuly');

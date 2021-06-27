@@ -27,11 +27,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 
+
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/post/create', [PostController::class, 'create'])->name('posts.create');
-Route::get('/post/{post}', [PostController::class, 'edit'])->name('posts.edit');
-
-
+Route::get('/post/create', [PostController::class, 'create'])->name('posts.create'); //keep this route above show route,otherwise it wil get error
+Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/post/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::post('/post/{post}/update', [PostController::class, 'update'])->name('posts.update');
 Route::post('/post/store', [PostController::class, 'store'])->name('posts.store');
 Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.destroy');

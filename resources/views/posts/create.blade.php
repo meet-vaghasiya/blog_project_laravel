@@ -5,15 +5,10 @@
 
 @section('content')
 
-    @if (session('status'))
-        <div class="">
-            {{ session('status') }}
-        </div>
-    @endif
-
     <form action="{{ route('posts.store') }}" method="POST">
         @csrf
         @include('posts.partials.form')
+        <div><input type="submit" class="btn btn-primary btn-block" value="Create"></div>
 
     </form>
 
