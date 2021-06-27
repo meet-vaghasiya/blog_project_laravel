@@ -17,7 +17,7 @@ class TestMiddleware
     public function handle(Request $request, Closure $next, $test, $test2)
     {
         // dd($test, $test2);
-        dd($request->input('abcd'));
+        dd($request->input('abcdt'));
         if ($request->input('abc')) {
             return redirect()->route('test.redirect');
         }
