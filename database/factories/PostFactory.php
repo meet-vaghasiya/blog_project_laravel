@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Author;
-use App\Models\Profile;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProfileFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Profile::class;
+    protected $model = Post::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +22,8 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'author_id' =>  $this->faker->unique()->randomNumber(1, mt_rand(1, Author::get()->count()))
+            'title' => $this->faker->words(2, true),
+            'content' => $this->faker->paragraphs(2, true)
         ];
     }
 }

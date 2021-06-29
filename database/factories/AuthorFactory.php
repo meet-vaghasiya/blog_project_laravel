@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Author;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AuthorFactory extends Factory
@@ -22,7 +23,7 @@ class AuthorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'created_at' => $this->faker->dateTime('now')
         ];
     }
 }

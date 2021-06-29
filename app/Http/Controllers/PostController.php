@@ -80,8 +80,11 @@ class PostController extends Controller
         return view('posts.index', ['posts' => Post::withCount('comments')->get()]);
     }
 
-    public function show(Post $post)
+    public function show($post)
     {
+
+        $post = Post::with('comments')->findOrFail($post);
+
         return view('posts.show', ['post' => $post]);
     }
 
