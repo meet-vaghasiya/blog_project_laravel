@@ -78,11 +78,22 @@ class PostController extends Controller
 
 
         // dd($post);
+
+
+        //soft deleted posts
+
+
     }
 
 
     public function index()
     {
+        // $post = Post::all()->pluck('id');
+        // $post = Post::withTrashed()->get()->pluck('id');
+        // $post = Post::onlyTrashed()->get();
+        // $post = Post::find(1)->forceDelete();
+        // $post = Post::find(5);
+        // dd($post);
         return view('posts.index', ['posts' => Post::withCount('comments')->get()]);
     }
 
