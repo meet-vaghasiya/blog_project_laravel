@@ -37,12 +37,22 @@ class UserFactory extends Factory
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function defaultName()
+    public function defaultUser()
     {
         return $this->state(function (array $attributes) {
             return [
-                'name' => 'Meet',
+                'name' => 'meet',
                 'email' => 'test@gmail.com',
+            ];
+        });
+    }
+    public function defaultAdminUser()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'admin',
+                'email' => 'test.admin@gmail.com',
+                'is_admin' => 1
             ];
         });
     }

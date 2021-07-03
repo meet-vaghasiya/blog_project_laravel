@@ -28,4 +28,9 @@ class Post extends Model
             $post->comments()->restore(); //  we can add multiple relationship data here
         });
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        User::factory()->defaultName()->create();
+        User::factory()->defaultAdminUser()->create();
+        User::factory()->defaultUser()->create();
         User::factory(10)->create();
         Post::factory(10)->create();
         Comment::factory(10)->create();

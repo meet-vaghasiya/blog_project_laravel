@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Comment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\updateRequest;
-use App\Models\Comment;
-use App\Models\Post;
-use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -99,8 +101,10 @@ class PostController extends Controller
 
     public function show($post)
     {
-
         $post = Post::with('comments')->findOrFail($post);
+
+
+
 
         return view('posts.show', ['post' => $post]);
     }
@@ -136,6 +140,14 @@ class PostController extends Controller
     public function update(updateRequest $request, Post $post)
     {
         // dd($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403, 'You can\'t edit this page'); // second argument is for message
+        // }
+        $this->authorize('update-post', $post); //above and belove both are same
+
+
+
         $post->title = $request->title;
         $post->content = $request->content;
         $post->save();
@@ -146,7 +158,26 @@ class PostController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        $post = Post::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403, 'You can\'t edit this page'); // second argument is for message
+        // }
+
+        // $user = User::find(1);
+        // $store_value = Gate::forUser($user)->denies('update-post', $post); // if user is not authorize than it will return true
+        // $store_value = Gate::forUser($user)->allows('update-post', $post); //opposite of allows
+
+
+        // over riding permission
+        // dd($store_value);
+
+        $this->authorize('delete-post', $post); //above and belove both are same
+
+
+
         $post = Post::destroy($id);
+
         $request->session()->flash('status', 'The blog Deleted succesfuly');
 
         return redirect()->back();
