@@ -137,3 +137,11 @@ Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts
 
 //     return view('conditonal-rendering');
 // })->middleware('test:first,second');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
