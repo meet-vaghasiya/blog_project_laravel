@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Post' => 'App\Policies\PostPolicy',
     ];
 
     /**
@@ -31,11 +31,13 @@ class AuthServiceProvider extends ServiceProvider
         // Gate::define('delete-post', function ($user, $post) {
         // });
 
-        // Gate::define('post.update', [PostPolicy::class, 'update']);
-        // Gate::define('post.delete', [PostPolicy::class, 'delete']);
+        Gate::define('post.update', [PostPolicy::class, 'update']);
+        Gate::define('post.delete', [PostPolicy::class, 'delete']);
 
-        Gate::resource('posts', PostPolicy::class);
-
+        // Gate::resource('posts', PostPolicy::class);
+        Gate::define('home.contact', function ($user) {
+            return $user->is_admin;
+        });
 
 
         Gate::before(function ($user, $ability) {

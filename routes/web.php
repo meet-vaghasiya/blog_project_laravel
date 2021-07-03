@@ -36,6 +36,10 @@ Route::post('/post/{post}/update', [PostController::class, 'update'])->name('pos
 Route::post('/post/store', [PostController::class, 'store'])->name('posts.store');
 Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
+
+
+Route::get('/secrate', [HomeController::class, 'secrate'])->name('secrate')->middleware('can:home.contact');
+
 Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts.hasmany');
 
 
