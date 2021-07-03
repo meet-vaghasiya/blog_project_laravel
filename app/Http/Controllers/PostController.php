@@ -144,7 +144,8 @@ class PostController extends Controller
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'You can\'t edit this page'); // second argument is for message
         // }
-        $this->authorize('update-post', $post); //above and belove both are same
+        // $this->authorize('update-post', $post); //above and belove both are same
+        $this->authorize('post.update', $post); //above and belove both are same
 
 
 
@@ -172,7 +173,8 @@ class PostController extends Controller
         // over riding permission
         // dd($store_value);
 
-        $this->authorize('delete-post', $post); //above and belove both are same
+        // $this->authorize('delete-post', $post); //above and belove both are same
+        $this->authorize('post.delete', $post); //above and belove both are same
 
 
 

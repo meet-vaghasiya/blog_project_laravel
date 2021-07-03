@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,12 +26,17 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', function ($user, $post) {
-            return $user->id == $post->user_id;
-        });
-        Gate::define('delete-post', function ($user, $post) {
-            return $user->id == $post->user_id;
-        });
+        // Gate::define('update-post', function ($user, $post) {
+        // });
+        // Gate::define('delete-post', function ($user, $post) {
+        // });
+
+        // Gate::define('post.update', [PostPolicy::class, 'update']);
+        // Gate::define('post.delete', [PostPolicy::class, 'delete']);
+
+        Gate::resource('posts', PostPolicy::class);
+
+
 
         Gate::before(function ($user, $ability) {
             if ($user->is_admin && in_array($ability, ['update-post', 'delete-post'])) { //second in_array gives certain permission to perticular permission to admin only
