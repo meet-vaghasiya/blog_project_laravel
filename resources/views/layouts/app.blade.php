@@ -28,8 +28,26 @@
             <a class="text-dark p-2" href="{{ route('home.contact') }}">Contact</a>
             <a class="text-dark p-2" href="{{ route('posts.index') }}">Blog post</a>
             <a class="text-dark p-2" href="{{ route('posts.create') }}">Add </a>
+
+            @guest
+                @if (Route::has('register'))
+                    <a class="text-dark p-2" href="{{ route('register') }}">Register</a>
+                @endif
+                <a class="text-dark p-2" href="{{ route('login') }}">Login </a>
+            @else
+                <a class="text-dark p-2" href="{{ route('login') }}"
+                    onclick="event.preventDefault();document.getElementById('submitLogout').submit()">Logout({{ Auth::user()->name }})
+                </a>
+
+
+                <form action="{{ route('logout') }}" method="POST" id="submitLogout">
+                    @csrf
+                </form>
+            @endguest
         </nav>
     </div>
+
+
 
     <div class="container">
 
