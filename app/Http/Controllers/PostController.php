@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\updateRequest;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -99,12 +100,21 @@ class PostController extends Controller
         // dd($post);
 
 
+        $mostActiveUser =    Cache::remember('most-active-user', now()->addSecond(10), function () {
+            return  User::mostActiveUser()->take(5)->get();
+        });
+        $mostActiveUserLastMonth =    Cache::remember('most-active-user-last-month', now()->addSecond(10), function () {
+            return  User::mostActiveUserLastMonth()->take(5)->get();
+        });
+        $mostComment =    Cache::remember('most-comments', now()->addSecond(10), function () {
+            return   Post::mostCommented()->take(5)->get();
+        });
 
         return view('posts.index', [
-            'posts' => Post::latestttt()->withCount('comments')->get(),
-            'most_commented' => Post::mostCommented()->take(5)->get(),
-            'most_active_user' => User::mostActiveUser()->take(5)->get(),
-            'most_active_user_last_month' => User::mostActiveUserLastMonth()->take(5)->get()
+            'posts' => Post::latestttt()->withCount('comments')->with('user')->get(),
+            'most_commented' => $mostComment,
+            'most_active_user' => $mostActiveUser,
+            'most_active_user_last_month' => $mostActiveUserLastMonth
         ]);
     }
 
@@ -114,19 +124,68 @@ class PostController extends Controller
         //     return   $q->latestt( );
         // }])->findOrFail($post);
 
-
         $post = Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
 
+        $postCache = Cache::remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+            return Post::with('comments')->findOrFail($post->id); //here we define latest() directly in modal
+        });
+
+        $sessionId = session()->getId();
+        $counterKey = 'post-{$post->id}-counter';
+        $userKey = 'post-{$post->id}-users';
+        Cache::forever($counterKey, 1);
+
+        $users = Cache::get($userKey, []);
+        $userUpdated = [];
+        $diffence = 0;
+        $now = now();
 
 
-        return view('posts.show', ['post' => $post]);
+        foreach ($users as $session => $lastVisit) {
+            if (now()->diffInMinutes($lastVisit)  >= 1) {
+                $diffence--;
+            } else {
+                $userUpdated[$session] = $lastVisit;
+            }
+        }
+        if (!array_key_exists($sessionId, $users) || now()->diffInMinutes($users[$sessionId]) >= 1) {
+            $diffence++;
+        }
+
+        $userUpdated[$sessionId] = $now;
+        Cache::forever($userKey, $userUpdated);
+
+        if (!Cache::has($counterKey)) {
+            dump('counter key doesnot exists');
+            Cache::forever($counterKey, 1);
+        } else {
+            dump($diffence);
+            Cache::increment($counterKey, $diffence);
+        }
+
+        $counter = Cache::get($counterKey);
+
+        return view('posts.show', ['post' => $postCache, 'counter' => $counter]);
     }
 
-    public function edit(Post $post)
+    public function edit($post)
     {
         // dd(Post::find($post));
         // dd($post);
-        return view('posts.edit', ['post' => $post]);
+
+
+        // Cache::put('data', 'test data store', 5);
+        // Cache::get('data');
+        // Cache::get('data', 'this is default value');
+        // Cache::has('data');
+        // Cache::increment('counter');
+        // Cache::decrement('counter');
+
+
+        $postCache = Cache::remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+            return Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
+        });
+        return view('posts.edit', ['post' => $postCache]);
     }
 
     public function create()

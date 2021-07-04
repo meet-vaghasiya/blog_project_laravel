@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
@@ -33,6 +34,10 @@ class Post extends Model
 
         static::restoring(function (Post $post) {
             $post->comments()->restore(); //  we can add multiple relationship data here
+        });
+
+        static::updating(function (Post $post) {
+            Cache::forget('post-{$post->id}');
         });
     }
 
