@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
         User::factory()->defaultAdminUser()->create();
         User::factory()->defaultUser()->create();
         User::factory(10)->create();
-        Post::factory(10)->create();
-        Comment::factory(10)->create();
+        Post::factory(20)->create();
+        Comment::factory(50)->create();
         Author::factory(10)->create();
         Profile::factory(6)->create();
     }

@@ -17,6 +17,8 @@
     <h6> Comments: </h6>
     @forelse ($post->comments as $comment)
         <p>{{ $comment->content }}
+            <span> ({{ $comment->created_at->diffForHumans() }})
+            </span>
         </p>
     @empty
         <p> No comments found </p>

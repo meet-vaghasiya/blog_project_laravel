@@ -24,7 +24,8 @@ class CommentFactory extends Factory
     {
         return [
             'content' => $this->faker->text,
-            'post_id' => mt_rand(5, Post::all()->count())
+            'post_id' => mt_rand(1, Post::all()->count()),
+            'created_at' => $this->faker->dateTimeBetween('-3 months')
 
         ];
     }

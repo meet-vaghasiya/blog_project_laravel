@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\updateRequest;
@@ -103,9 +104,6 @@ class PostController extends Controller
     {
         $post = Post::with('comments')->findOrFail($post);
 
-
-
-
         return view('posts.show', ['post' => $post]);
     }
 
@@ -131,6 +129,7 @@ class PostController extends Controller
         $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
+        $post->user_id = Auth::id();
         $post->save();
 
         $request->session()->flash('status', 'The blog post was created');
