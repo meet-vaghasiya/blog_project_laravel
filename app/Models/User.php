@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -40,6 +41,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeMostActiveUser(Builder $query)
+    {
+        return $query->withCount('posts')->orderBy('posts_count', 'desc');
+    }
+    public function scopeMostActiveUserLastMonth(Builder $query)
+    {
+        return $query->withCount(['posts' => function ($q) {
+            $q->where('created_at', '>=', now()->subMonth(1));
+        }])->having('posts_count', '>=', 2)->orderBy('posts_count', 'desc');
+    }
 
     public function posts()
     {

@@ -97,12 +97,27 @@ class PostController extends Controller
         // $post = Post::find(1)->forceDelete();
         // $post = Post::find(5);
         // dd($post);
-        return view('posts.index', ['posts' => Post::withCount('comments')->get()]);
+
+
+
+        return view('posts.index', [
+            'posts' => Post::latestttt()->withCount('comments')->get(),
+            'most_commented' => Post::mostCommented()->take(5)->get(),
+            'most_active_user' => User::mostActiveUser()->take(5)->get(),
+            'most_active_user_last_month' => User::mostActiveUserLastMonth()->take(5)->get()
+        ]);
     }
 
     public function show($post)
     {
-        $post = Post::with('comments')->findOrFail($post);
+        // $post = Post::with(['comments' => function ($q) {
+        //     return   $q->latestt( );
+        // }])->findOrFail($post);
+
+
+        $post = Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
+
+
 
         return view('posts.show', ['post' => $post]);
     }

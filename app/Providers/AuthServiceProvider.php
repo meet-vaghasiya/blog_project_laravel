@@ -41,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
 
 
         Gate::before(function ($user, $ability) {
-            if ($user->is_admin && in_array($ability, ['update-post', 'delete-post'])) { //second in_array gives certain permission to perticular permission to admin only
+            if ($user->is_admin && in_array($ability, ['update', 'delete'])) { //second in_array gives certain permission to perticular permission to admin only
                 return true;
             }
         });  // check initially and never check other gates
