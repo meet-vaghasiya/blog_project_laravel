@@ -5,24 +5,39 @@
 
 @section('content')
 
-    <h3>{{ $post->title }}</h3>
-    <p>{{ $post->content }}</p>
-    <p>{{ $post->created_at->diffForHumans() }}</p>
+    <h3>{{ $post->title }}
+        {{-- @if (now()->diffInMinutes($post->created_at) < 40)
+            @badge(['show'=>false])
+            New!!
+            @endbadge
 
-    {{-- {{ dd('sdf') }} --}}
-    @if (now()->diffInMinutes($post->created_at) < 5)
-        <div class="alert alert-info">New!!</div>
-
-    @endif
-    <h6> Comments: </h6>
-    @forelse ($post->comments as $comment)
-        <p>{{ $comment->content }}
-            <span> ({{ $comment->created_at->diffForHumans() }})
-            </span>
-        </p>
-    @empty
-        <p> No comments found </p>
-    @endforelse
+        @endif --}}
+        @badge(['show'=>now()->diffInMinutes($post->created_at) < 40]) New!! @endbadge </h3>
+            <p>{{ $post->content }}</p>
 
 
-@endsection
+            @updated(['date'=>$post->created_at,'name'=>$post->user->name])
+            @endupdated
+
+
+            @updated(['date'=>$post->updated_at])
+            Updated
+            @endupdated
+            {{-- {{ dd('sdf') }} --}}
+
+            {{-- @component('components.badge', ['type' => 'primary'])
+            New!!
+        @endcomponent --}}
+
+
+            <h6> Comments: </h6>
+            @forelse ($post->comments as $comment)
+                <p>{{ $comment->content }}
+                    @updated(['date'=>$comment->created_at])
+                    @endupdated </p>
+            @empty
+                <p> No comments found </p>
+            @endforelse
+
+
+        @endsection
