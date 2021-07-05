@@ -135,7 +135,7 @@ class PostController extends Controller
 
 
         return view('posts.index', [
-            'posts' => Post::latestttt()->withCount('comments')->with('user')->get(),
+            'posts' => Post::latestttt()->withCount('comments')->with(['user', 'tags'])->get(),
 
         ]);
     }
@@ -146,10 +146,10 @@ class PostController extends Controller
         //     return   $q->latestt( );
         // }])->findOrFail($post);
 
-        $post = Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
+        // $post = Post::with(['comments', 'tags'])->findOrFail($post); //here we define latest() directly in modal
 
         $postCache = Cache::remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
-            return Post::with('comments')->findOrFail($post->id); //here we define latest() directly in modal
+            return Post::with(['comments', 'tags'])->findOrFail($post->id); //here we define latest() directly in modal
         });
 
         $sessionId = session()->getId();

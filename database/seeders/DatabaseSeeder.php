@@ -26,5 +26,7 @@ class DatabaseSeeder extends Seeder
         Comment::factory(300)->create();
         Author::factory(10)->create();
         Profile::factory(6)->create();
+
+        $this->call([TagsTableSedder::class, PostTagSeeder::class]);
     }
 }
