@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,11 +37,14 @@ Route::post('/post/{post}/update', [PostController::class, 'update'])->name('pos
 Route::post('/post/store', [PostController::class, 'store'])->name('posts.store');
 Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
+Route::get('/post/tag/{id}', [PostTagController::class, 'index'])->name('posts.tag.index');
+
 
 
 Route::get('/secrate', [HomeController::class, 'secrate'])->name('secrate')->middleware('can:home.contact');
 
 Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts.hasmany');
+Route::get('/practise/many-to-many', [PostController::class, 'manyToMany'])->name('posts.hasmany');
 
 
 // Route::get('/contact', function () {

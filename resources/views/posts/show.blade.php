@@ -7,6 +7,7 @@
 
     <h3>{{ $post->title }}</h3>
     <div class="">Currently {{ $counter }} people is in this post</div>
+
     {{-- @if (now()->diffInMinutes($post->created_at) < 40)
             @badge(['show'=>false])
             New!!
@@ -30,7 +31,9 @@
             New!!
         @endcomponent --}}
 
+        @tags(['tags'=>$post->tags])
 
+        @endtags
         <h6> Comments: </h6>
         @forelse ($post->comments as $comment)
             <p>{{ $comment->content }}

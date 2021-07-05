@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\updateRequest;
-use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -89,6 +90,37 @@ class PostController extends Controller
 
     }
 
+    public function manyToMany()
+    {
+        // dd('adsfafd');
+        // $tag = new Tag();
+        // $tag->name = 'tag5';
+        // // $tag->save();
+        // $tag1 = new Tag();
+        // $tag1->name = 'tag5';
+        // // $tag1->save();
+
+        // $tag1 = Tag::find(4);
+        // $tag2 = Tag::find(3);
+
+
+        // $post = Post::find(2);
+        // $post->tags()->attach($tag);
+        // $post->tags()->attach([$tag1->id, $tag2->id]);
+        // $post->tags()->detach([$tag1->id, $tag2->id]);
+        // $post->tags()->syncWithoutDetaching([$tag1->id, $tag2->id]);
+        // $post->tags()->sync([]);
+
+        // $tag = Tag::with('posts')->find(3);
+        // $tag = Tag::with('posts')->find(3);
+        // $tag = Tag::find(4);
+        // $tag->posts;
+
+        // $post = Post::find(1);
+        // $post->tags;
+        // dd(($post->tags)[0]->post_pivot_table);
+    }
+
 
     public function index()
     {
@@ -156,10 +188,8 @@ class PostController extends Controller
         Cache::forever($userKey, $userUpdated);
 
         if (!Cache::has($counterKey)) {
-            dump('counter key doesnot exists');
             Cache::forever($counterKey, 1);
         } else {
-            dump($diffence);
             Cache::increment($counterKey, $diffence);
         }
 
