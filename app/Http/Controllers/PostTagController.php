@@ -10,6 +10,6 @@ class PostTagController extends Controller
     public function index($id)
     {
         $tag = Tag::findOrFail($id);
-        return view('posts.index', ['posts' => $tag->posts, 'most_commented' => [], 'most_active_user' => [], 'most_active_user_last_month' => []]);
+        return view('posts.index', ['posts' => $tag->posts]);
     }
 }

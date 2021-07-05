@@ -132,21 +132,11 @@ class PostController extends Controller
         // dd($post);
 
 
-        $mostActiveUser =    Cache::remember('most-active-user', now()->addSecond(10), function () {
-            return  User::mostActiveUser()->take(5)->get();
-        });
-        $mostActiveUserLastMonth =    Cache::remember('most-active-user-last-month', now()->addSecond(10), function () {
-            return  User::mostActiveUserLastMonth()->take(5)->get();
-        });
-        $mostComment =    Cache::remember('most-comments', now()->addSecond(10), function () {
-            return   Post::mostCommented()->take(5)->get();
-        });
+
 
         return view('posts.index', [
             'posts' => Post::latestttt()->withCount('comments')->with('user')->get(),
-            'most_commented' => $mostComment,
-            'most_active_user' => $mostActiveUser,
-            'most_active_user_last_month' => $mostActiveUserLastMonth
+
         ]);
     }
 
