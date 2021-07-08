@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentFactory extends Factory
@@ -25,7 +26,8 @@ class CommentFactory extends Factory
         return [
             'content' => $this->faker->text,
             'post_id' => mt_rand(1, Post::all()->count()),
-            'created_at' => $this->faker->dateTimeBetween('-3 months')
+            'created_at' => $this->faker->dateTimeBetween('-3 months'),
+            'user_id' => mt_rand(1, User::all()->count())
 
         ];
     }

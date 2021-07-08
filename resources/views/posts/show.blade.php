@@ -37,10 +37,14 @@
 
                     @endtags
                     <h6> Comments: </h6>
+                    @include('comments._form')
                     @forelse ($post->comments as $comment)
                         <p>{{ $comment->content }}
-                            @updated(['date'=>$comment->created_at])
-                            @endupdated </p>
+                            {{-- @updated(['date'=>$comment->created_at])
+                            @endupdated --}}
+                            @updated(['date'=>$comment->created_at,'name'=>$comment->user->name])
+                            @endupdated
+                        </p>
                     @empty
                         <p> No comments found </p>
                     @endforelse

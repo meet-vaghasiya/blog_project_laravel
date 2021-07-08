@@ -16,10 +16,7 @@ class Post extends Model
 
     protected $guarded = [];
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class)->latestt(); // we define in local scope
-    }
+
 
     public static function boot()
     {
@@ -37,7 +34,7 @@ class Post extends Model
         });
 
         static::updating(function (Post $post) {
-            Cache::forget('post-{$post->id}');
+            Cache::tags(['blog-post'])->forget('post-{$post->id}');
         });
     }
 
@@ -51,10 +48,20 @@ class Post extends Model
         return $query->withCount("comments")->orderBy('comments_count', 'desc');
     }
 
+    public function scopeLatestWithRelations(Builder $query)
+    {
+        return $query->latest()->withCount('comments')->with('user')->with('tags');
+    }
+
     //relationships
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latestt(); // we define in local scope
     }
 
     public function tags()

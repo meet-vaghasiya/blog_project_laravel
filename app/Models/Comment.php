@@ -12,13 +12,19 @@ class Comment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [];
+
+
     public static function boot()
     {
         parent::boot();
 
         // static::addGlobalScope(new LatestScope);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function post()
     {

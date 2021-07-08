@@ -57,6 +57,11 @@ class User extends Authenticatable
         }])->has('posts', '>=', 2)->orderBy('posts_count', 'desc');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latestt(); // we define in local scope
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);

@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Author;
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\Profile;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+
+        Cache::tags(['blog_post'])->flush();
 
         User::factory()->defaultAdminUser()->create();
         User::factory()->defaultUser()->create();

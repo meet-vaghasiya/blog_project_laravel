@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.des
 
 Route::get('/post/tag/{id}', [PostTagController::class, 'index'])->name('posts.tag.index');
 
-
+Route::post('/post/{post}/commetns', [PostCommentController::class, 'addComment'])->name('post.comment.store');
 
 Route::get('/secrate', [HomeController::class, 'secrate'])->name('secrate')->middleware('can:home.contact');
 
@@ -145,10 +146,6 @@ Route::get('/practise/many-to-many', [PostController::class, 'manyToMany'])->nam
 
 //     return view('conditonal-rendering');
 // })->middleware('test:first,second');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

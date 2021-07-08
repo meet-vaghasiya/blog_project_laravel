@@ -132,10 +132,12 @@ class PostController extends Controller
         // dd($post);
 
 
-
+        // $post = Post::latestttt()->withCount('comments')->with(['user', 'tags'])->get();
+        // dump($post);
+        // dump($post);
 
         return view('posts.index', [
-            'posts' => Post::latestttt()->withCount('comments')->with(['user', 'tags'])->get(),
+            'posts' => Post::latestWithRelations()->get(),
 
         ]);
     }
@@ -146,18 +148,18 @@ class PostController extends Controller
         //     return   $q->latestt( );
         // }])->findOrFail($post);
 
-        // $post = Post::with(['comments', 'tags'])->findOrFail($post); //here we define latest() directly in modal
+        $post = Post::with(['comments', 'tags'])->findOrFail($post); //here we define latest() directly in modal
 
-        $postCache = Cache::remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+        $postCache = Cache::tags(['blog-post'])->remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
             return Post::with(['comments', 'tags'])->findOrFail($post->id); //here we define latest() directly in modal
         });
 
         $sessionId = session()->getId();
         $counterKey = 'post-{$post->id}-counter';
         $userKey = 'post-{$post->id}-users';
-        Cache::forever($counterKey, 1);
+        Cache::tags(['blog-post'])->forever($counterKey, 1);
 
-        $users = Cache::get($userKey, []);
+        $users = Cache::tags(['blog-post'])->get($userKey, []);
         $userUpdated = [];
         $diffence = 0;
         $now = now();
@@ -178,12 +180,12 @@ class PostController extends Controller
         Cache::forever($userKey, $userUpdated);
 
         if (!Cache::has($counterKey)) {
-            Cache::forever($counterKey, 1);
+            Cache::tags(['blog-post'])->forever($counterKey, 1);
         } else {
             Cache::increment($counterKey, $diffence);
         }
 
-        $counter = Cache::get($counterKey);
+        $counter = Cache::tags(['blog-post'])->get($counterKey);
 
         return view('posts.show', ['post' => $postCache, 'counter' => $counter]);
     }
@@ -201,8 +203,14 @@ class PostController extends Controller
         // Cache::increment('counter');
         // Cache::decrement('counter');
 
+        // Cache::tags(['people', 'artists'])->put('john', 'Hello Im john');
+        // Cache::tags(['people', 'author'])->put('test', 'test category');
+        // Cache::tags(['people'])->flush();
 
-        $postCache = Cache::remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+
+
+
+        $postCache = Cache::tags(['blog-post'])->remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
             return Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
         });
         return view('posts.edit', ['post' => $postCache]);
