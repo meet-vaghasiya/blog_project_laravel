@@ -15,6 +15,10 @@
     <textarea name="content" class="form-control" id="content"
         placeholder="Enter content">{{ old('content', optional($post ?? null)->content) }}</textarea>
 </div>
+<div class="form-group">
+    <label for="thumbnail">Thumbnail</label>
+    <input name="thumbnail" type="file" class="form-control" id="thumbnail" placeholder="Enter content">
+</div>
 @error('content')
     <div class="alert alert-danger">
         {{ $message }}

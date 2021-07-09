@@ -27,6 +27,7 @@ class Post extends Model
 
         static::deleting(function (Post $post) {
             $post->comments()->delete();   //  we can add multiple relationship data here
+            $post->image()->delete();
         });
 
         static::restoring(function (Post $post) {
@@ -67,5 +68,10 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withTimestamps()->as('post_pivot_table');
+    }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
     }
 }

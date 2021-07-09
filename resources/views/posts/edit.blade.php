@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <form action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST">
+    <form action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @include('posts.partials.form')
         <div><input type="submit" class="btn btn-primary" value="Edit"></div>

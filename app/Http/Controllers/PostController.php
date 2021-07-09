@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Image;
 use App\Models\Comment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\updateRequest;
 
@@ -232,7 +235,28 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->user_id = Auth::id();
+
         $post->save();
+        $hasFile = $request->hasFile('thumbnail');
+        if ($hasFile) {
+            $file = $request->file('thumbnail');
+
+            // $ff =    $file->store('thumbnail');
+            // Storage::disk("public")->putFile('thumbnails', $file);
+
+            // $file1 = $file->storeAs('thumbnails', Str::random(10) . '.' . $file->getClientOriginalExtension());
+            // Storage::putFileAs('thumbn', $file, Str::random(10) . '.' . $file->guessClientExtension());
+            // dump(Storage::url($file1), $file1, $file2);
+            // dd(Storage::disk('public')->url($file2));
+            $file_path =    Storage::disk('public')->putFileAs('thumbnails', $file, Str::random(10) . '.' . $file->guessClientExtension());
+
+            $post->image()->save(
+                Image::create([
+                    'path' => $file_path
+                ])
+            );
+        }
+
 
         $request->session()->flash('status', 'The blog post was created');
         return redirect()->back();
@@ -253,6 +277,25 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->save();
+
+        $hasFile =  $request->hasFile('thumbnail');
+        if ($hasFile) {
+            $file = $request->file('thumbnail');
+            $file_path =    Storage::disk('public')->putFileAs('thumbnails', $file, Str::random(10) . '.' . $file->guessClientExtension());
+
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image->path);
+                $post->image->path = $file_path;
+                $post->image->save();
+            } else {
+
+                $post->image()->save(
+                    Image::create([
+                        'path' => $file_path
+                    ])
+                );
+            }
+        }
         $request->session()->flash('status', 'The blog post was created');
 
         return redirect()->back();
@@ -261,6 +304,7 @@ class PostController extends Controller
     public function destroy(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+        Storage::disk('public')->delete($post->image->path);
 
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'You can\'t edit this page'); // second argument is for message
