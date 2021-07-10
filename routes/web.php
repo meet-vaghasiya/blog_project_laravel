@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\PostCommentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,7 @@ Route::get('/secrate', [HomeController::class, 'secrate'])->name('secrate')->mid
 Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts.hasmany');
 Route::get('/practise/many-to-many', [PostController::class, 'manyToMany'])->name('posts.hasmany');
 
-
+Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 // Route::get('/contact', function () {
 //     return 'contact page';
 //     // return view('welcome');

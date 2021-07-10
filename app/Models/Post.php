@@ -70,8 +70,12 @@ class Post extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps()->as('post_pivot_table');
     }
 
+    // public function image()
+    // {
+    //     return $this->hasOne(Image::class);
+    // }
     public function image()
     {
-        return $this->hasOne(Image::class);
+        return $this->morphOne(Image::class, 'imageable');
     }
 }

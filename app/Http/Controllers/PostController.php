@@ -250,8 +250,13 @@ class PostController extends Controller
             // dd(Storage::disk('public')->url($file2));
             $file_path =    Storage::disk('public')->putFileAs('thumbnails', $file, Str::random(10) . '.' . $file->guessClientExtension());
 
+            // $post->image()->save(
+            //     Image::create([
+            //         'path' => $file_path
+            //     ])
+            // );
             $post->image()->save(
-                Image::create([
+                Image::make([
                     'path' => $file_path
                 ])
             );
@@ -290,7 +295,7 @@ class PostController extends Controller
             } else {
 
                 $post->image()->save(
-                    Image::create([
+                    Image::make([
                         'path' => $file_path
                     ])
                 );

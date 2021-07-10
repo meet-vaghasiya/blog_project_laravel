@@ -31,7 +31,7 @@
                         @endif
 
                     </h3>
-                    @updated(['date'=>$post->created_at,'name'=>$post->user->name])
+                    @updated(['date'=>$post->created_at,'name'=>$post->user->name,'userId'=>$post->user->id])
                     @endupdated
                     @tags(['tags'=>$post->tags])
 
