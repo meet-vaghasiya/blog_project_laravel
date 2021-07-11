@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostComment\StoreRequest;
 
-class PostCommentController extends Controller
+class UserCommentController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
 
-    public function addComment(Post $post, StoreRequest $request)
+    public function store(User $user, StoreRequest $request)
     {
-        $post->comments()->create([
+        $user->commentsOn()->create([
             'content' => $request->content,
             'user_id' => $request->user()->id
 

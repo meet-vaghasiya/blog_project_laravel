@@ -7,9 +7,9 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
-                @if ($post->image->url())
+                @if ($post->image && $post->image->url())
                     <div class=""
-                        style="background-image:url('{{ $post->image->url() }}');min-height:500pxtext-align:center;background-attachment:fixed">
+                        style="background-image:url('{ $post->image->url()  }}');min-height:500pxtext-align:center;background-attachment:fixed">
                         <h1 class="" style="padding: 100px;text-shadow:1px 2px #000">
                         @else
                             <h1>
@@ -36,7 +36,7 @@
             @badge(['show'=>now()->diffInMinutes($post->created_at) < 40]) New!! @endbadge </h3>
 
 
-                @updated(['date'=>$post->created_at,'name'=>$post->user->name])
+                @updated(['date'=>$post->created_at,'name'=>$post->user->name,'userId'=>$post->user->id])
                 @endupdated
 
 
@@ -53,17 +53,14 @@
 
                 @endtags
                 <h6> Comments: </h6>
-                @include('comments._form')
-                @forelse ($post->comments as $comment)
-                    <p>{{ $comment->content }}
-                        {{-- @updated(['date'=>$comment->created_at])
-                            @endupdated --}}
-                        @updated(['date'=>$comment->created_at,'name'=>$comment->user->name])
-                        @endupdated
-                    </p>
-                @empty
-                    <p> No comments found </p>
-                @endforelse
+                {{-- @include('comments._form') --}}
+                @commentForm(['route'=>route('post.comment.store', ['post' => $post->id])])
+                @endcommentForm
+
+                @commentList(['comments'=>$post->comments])
+
+                @endcommentList
+
 
         </div>
         <div class="col-4">

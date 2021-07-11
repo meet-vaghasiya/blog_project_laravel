@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\PostCommentController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,7 @@ Route::get('/practise/hasMany', [PostController::class, 'hasMany'])->name('posts
 Route::get('/practise/many-to-many', [PostController::class, 'manyToMany'])->name('posts.hasmany');
 
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
+Route::resource('users.comments', UserCommentController::class)->only(['store']);
 // Route::get('/contact', function () {
 //     return 'contact page';
 //     // return view('welcome');

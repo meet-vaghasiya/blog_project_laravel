@@ -25,9 +25,12 @@ class CommentFactory extends Factory
     {
         return [
             'content' => $this->faker->text,
-            'post_id' => mt_rand(1, Post::all()->count()),
+            // 'post_id' => mt_rand(1, Post::all()->count()),
             'created_at' => $this->faker->dateTimeBetween('-3 months'),
-            'user_id' => mt_rand(1, User::all()->count())
+            'user_id' => mt_rand(1, User::all()->count()),
+            'commentable_type' => $this->faker->randomElement(['App\Models\User', 'App\Models\Post']),
+            'commentable_id' => mt_rand(1, User::all()->count()),
+
 
         ];
     }

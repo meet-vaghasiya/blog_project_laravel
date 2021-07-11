@@ -60,9 +60,13 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class)->latestt(); // we define in local scope
+    // }
     public function comments()
     {
-        return $this->hasMany(Comment::class)->latestt(); // we define in local scope
+        return $this->morphMany(Comment::class, 'commentable')->latestt(); // we define in local scope
     }
 
     public function tags()
