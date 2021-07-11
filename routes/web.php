@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\UserCommentController;
+use App\Mail\CommentPostedMarkdown;
+use App\Models\Comment;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +53,11 @@ Route::get('/practise/many-to-many', [PostController::class, 'manyToMany'])->nam
 
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
+
+Route::get('mailable-test',function(){
+$comment = Comment::find(1);
+return new CommentPostedMarkdown($comment);
+});
 // Route::get('/contact', function () {
 //     return 'contact page';
 //     // return view('welcome');
