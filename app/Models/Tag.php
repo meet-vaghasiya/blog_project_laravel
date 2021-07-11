@@ -9,8 +9,18 @@ class Tag extends Model
 {
     use HasFactory;
 
+    // public function posts()
+    // {
+    //     return $this->belongsToMany(Post::class)->withTimestamps()->as('tag_pivot_table');
+    // }
+
+
     public function posts()
     {
-        return $this->belongsToMany(Post::class)->withTimestamps()->as('tag_pivot_table');
+        return $this->morphedByMany(Post::class, 'taggable')->withTimestamps()->as('tagg');
+    }
+    public function comments()
+    {
+        return $this->morphedByMany(Post::class, 'taggable')->withTimestamps()->as('tagg');
     }
 }

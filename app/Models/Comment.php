@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\LatestScope;
+use App\Traits\Taggable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Taggable;
 
     protected $guarded = [];
 
@@ -49,4 +50,8 @@ class Comment extends Model
     {
         return $this->morphTo();
     }
+    // public function tags()
+    // {
+    //     return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    // }
 }

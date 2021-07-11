@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\DeleteScope;
 use App\Scopes\LatestScope;
+use App\Traits\Taggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Taggable;
 
     protected $guarded = [];
 
@@ -69,10 +70,14 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable')->latestt(); // we define in local scope
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class)->withTimestamps()->as('post_pivot_table');
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tag::class)->withTimestamps()->as('post_pivot_table');
+    // }
+    // public function tags()
+    // {
+    //     return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    // }
 
     // public function image()
     // {

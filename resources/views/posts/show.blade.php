@@ -9,7 +9,7 @@
             <div class="col-8">
                 @if ($post->image && $post->image->url())
                     <div class=""
-                        style="background-image:url('{ $post->image->url()  }}');min-height:500pxtext-align:center;background-attachment:fixed">
+                        style="background-image:url('{{ $post->image->url() }}');min-height:500pxtext-align:center;background-attachment:fixed">
                         <h1 class="" style="padding: 100px;text-shadow:1px 2px #000">
                         @else
                             <h1>
