@@ -57,10 +57,17 @@ class User extends Authenticatable
         }])->has('posts', '>=', 2)->orderBy('posts_count', 'desc');
     }
 
-    // public function comments()
-    // {
-    //     return $this->hasMany(Comment::class)->latestt(); // we define in local scope
-    // }
+    public function scopeThatHasCommentOnPost(Builder $query,Post $post)
+    {
+      return  $query->whereHas('comments',function($q) use ($post){
+            return $q->where('commentable_id',$post->id)->where('commentable_type',Post::class);
+        });
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latestt(); // we define in local scope
+    }
 
     public function commentsOn()
     {
@@ -71,8 +78,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
 }
