@@ -84,4 +84,8 @@ class User extends Authenticatable
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    public function scopeThatIsAdmin(Builder $query){
+        return $query->where('is_admin',true);
+    }
+
 }

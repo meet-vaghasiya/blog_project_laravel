@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPosted as EventsCommentPosted;
 use App\Models\Post;
 use App\Models\User;
 use App\Jobs\ThrottleMail;
@@ -31,6 +32,9 @@ class PostCommentController extends Controller
 
         ]);
 
+event(new EventsCommentPosted($comment));
+
+
         // Mail::to($post->user)->send(
         //     // new CommentPosted($comment)
         //     new CommentPostedMarkdown($comment)
@@ -40,10 +44,10 @@ class PostCommentController extends Controller
         // );
 
         //     new CommentPostedMarkdown($comment)
-        ThrottleMail::dispatch( new CommentPostedMarkdown($comment),$post->user)->onQueue('high')              ;
+        // ThrottleMail::dispatch( new CommentPostedMarkdown($comment),$post->user)->onQueue('high')              ;
 
 
-        NotifyUserPostWasCreated::dispatch($comment)->onQueue('low');
+        // NotifyUserPostWasCreated::dispatch($comment)->onQueue('low');
 
         
         // $when = now()->addMinutes(1);

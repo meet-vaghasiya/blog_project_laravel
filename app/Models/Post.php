@@ -26,18 +26,20 @@ class Post extends Model
 
         // static::addGlobalScope(new LatestScope);
 
-        static::deleting(function (Post $post) {
-            $post->comments()->delete();   //  we can add multiple relationship data here
-            $post->image()->delete();
-        });
+        // static::deleting(function (Post $post) {
+        //     $post->comments()->delete();   //  we can add multiple relationship data here
+        //     $post->image()->delete();
+        //     Cache::tags(['blog-post'])->forget("post-{$post->id}");
+
+        // });
 
         static::restoring(function (Post $post) {
             $post->comments()->restore(); //  we can add multiple relationship data here
         });
 
-        static::updating(function (Post $post) {
-            Cache::tags(['blog-post'])->forget('post-{$post->id}');
-        });
+        // static::updating(function (Post $post) {
+        //     Cache::tags(['blog-post'])->forget("post-{$post->id}");
+        // });
     }
 
     public function scopeLatestttt(Builder $query)

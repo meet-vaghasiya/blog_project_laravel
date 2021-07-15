@@ -23,11 +23,11 @@ class Comment extends Model
 
         static::creating(function (Comment $comment) {
 
-            if ($comment->commentable_type === App\Models\Post::class) {
+            // if ($comment->commentable_type === App\Models\Post::class) {
 
-                Cache::tags(['blog-post'])->forgot('blog-post-{$comment->commentable_id}');
-                Cache::tags(['blog-post'])->forgot('mostComment');
-            }
+            //     Cache::tags(['blog-post'])->forgot('blog-post-{$comment->commentable_id}');
+            //     Cache::tags(['blog-post'])->forgot('mostComment');
+            // }
         });
         // static::addGlobalScope(new LatestScope);
     }

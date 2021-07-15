@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
-use App\Http\ViewComposer\ActivityComposer;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Observers\PostObserver;
+use App\Observers\CommentObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Http\ViewComposer\ActivityComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,5 +42,9 @@ class AppServiceProvider extends ServiceProvider
 
         // view()->composer('*', ActivityComposer::class);
         view()->composer(['posts.index', 'posts.show'], ActivityComposer::class);
+
+
+        Post::observe(PostObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 }

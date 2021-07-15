@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostPosted;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
@@ -153,13 +154,13 @@ class PostController extends Controller
 
         $post = Post::with(['comments', 'tags'])->findOrFail($post); //here we define latest() directly in modal
 
-        $postCache = Cache::tags(['blog-post'])->remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+        $postCache = Cache::tags(['blog-post'])->remember("post-{$post->id}", now()->addSecond(10), function () use ($post) {
             return Post::with(['comments', 'tags'])->findOrFail($post->id); //here we define latest() directly in modal
         });
 
         $sessionId = session()->getId();
-        $counterKey = 'post-{$post->id}-counter';
-        $userKey = 'post-{$post->id}-users';
+        $counterKey = "post-{$post->id}-counter";
+        $userKey = "post-{$post->id}-users";
         Cache::tags(['blog-post'])->forever($counterKey, 1);
 
         $users = Cache::tags(['blog-post'])->get($userKey, []);
@@ -213,7 +214,7 @@ class PostController extends Controller
 
 
 
-        $postCache = Cache::tags(['blog-post'])->remember('post-{$post->id}', now()->addSecond(10), function () use ($post) {
+        $postCache = Cache::tags(['blog-post'])->remember("post-{$post->id}", now()->addSecond(10), function () use ($post) {
             return Post::with('comments')->findOrFail($post); //here we define latest() directly in modal
         });
         return view('posts.edit', ['post' => $postCache]);
@@ -262,6 +263,7 @@ class PostController extends Controller
             );
         }
 
+        event(new PostPosted($post));
 
         $request->session()->flash('status', 'The blog post was created');
         return redirect()->back();
@@ -309,7 +311,9 @@ class PostController extends Controller
     public function destroy(Request $request, $id)
     {
         $post = Post::findOrFail($id);
-        Storage::disk('public')->delete($post->image->path);
+        if($post->image){
+            Storage::disk('public')->delete($post->image->path);
+        }
 
         // if (Gate::denies('update-post', $post)) {
         //     abort(403, 'You can\'t edit this page'); // second argument is for message
