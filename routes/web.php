@@ -58,6 +58,9 @@ Route::get('mailable-test',function(){
 $comment = Comment::find(1);
 return new CommentPostedMarkdown($comment);
 });
+
+
+Route::view('local', 'local.index');
 // Route::get('/contact', function () {
 //     return 'contact page';
 //     // return view('welcome');

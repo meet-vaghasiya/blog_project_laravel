@@ -42,6 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+public const LOCALES = [
+    'en'=>'English',
+    'es'=>'Espanol',
+    'de'=>'Dutch',
+    'hi'=>'Hindi'
+];
+
     public function scopeMostActiveUser(Builder $query)
     {
         return $query->withCount('posts')->orderBy('posts_count', 'desc');
