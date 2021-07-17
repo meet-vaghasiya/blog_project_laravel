@@ -45,6 +45,7 @@ Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('posts.des
 Route::get('/post/tag/{id}', [PostTagController::class, 'index'])->name('posts.tag.index');
 
 Route::post('/post/{post}/commetns', [PostCommentController::class, 'addComment'])->name('post.comment.store');
+Route::get('/post/{post}/comments', [PostCommentController::class, 'index'])->name('post.comment.index');
 
 Route::get('/secrate', [HomeController::class, 'secrate'])->name('secrate')->middleware('can:home.contact');
 

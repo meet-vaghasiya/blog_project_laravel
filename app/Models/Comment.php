@@ -15,7 +15,7 @@ class Comment extends Model
     use HasFactory, SoftDeletes, Taggable;
 
     protected $guarded = [];
-
+protected $hidden = ['deleted_at', 'commentable_type', 'commentable_id','user_id'];    
 
     public static function boot()
     {

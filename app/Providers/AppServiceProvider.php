@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Observers\PostObserver;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Http\ViewComposer\ActivityComposer;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,5 +48,8 @@ class AppServiceProvider extends ServiceProvider
 
         Post::observe(PostObserver::class);
         Comment::observe(CommentObserver::class);
+
+        // CommentResource::withoutWrapping();
+        JsonResource::withoutWrapping();
     }
 }

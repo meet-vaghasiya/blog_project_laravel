@@ -13,14 +13,24 @@ use App\Mail\CommentPostedMarkdown;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\NotifyUserPostWasCreated;
 use App\Http\Requests\PostComment\StoreRequest;
+use App\Http\Resources\Comment;
+use App\Http\Resources\CommentResource;
 
 class PostCommentController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
     }
+
+    public function index(Post $post)
+    {
+        // return new Comment($post->comments()->first());
+        return  CommentResource::collection($post->comments()->with('user')->get());
+        return $post->comments()->with('user')->get();
+    }
+
 
 
     public function addComment(Post $post, StoreRequest $request)
